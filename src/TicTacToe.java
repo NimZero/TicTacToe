@@ -44,9 +44,9 @@ public class TicTacToe {
         do{
             keep = false;
             try {
-                System.out.print("\n"+player+" ou voulez-vous jouer (0-9): ");
+                System.out.print("\n"+player+" where do you wan't to play ? (0-8) ");
                 index = input.nextInt();
-                if(index<0 || index>9) throw new Exception();
+                if(index<0 || index>8) throw new Exception();
 
             }catch (Exception e) {
                 System.out.println("Error.");
@@ -58,6 +58,7 @@ public class TicTacToe {
     }
 
     public void print() {
+        System.out.println("Round: "+round+"\n");
         System.out.println(players[0]);
         board.print();
         System.out.println(players[1]);
@@ -73,7 +74,7 @@ public class TicTacToe {
         game++;
         board.reset();
 
-        board.setBoard(new Character[] {'X', 'X', null, 'O', null, 'O', null, null, 'X'});
+        //board.setBoard(new Character[] {'X', 'X', null, 'O', null, 'O', null, null, 'X'});
 
         System.out.println("Game "+game+", null: "+nul);
         Player player;
@@ -90,14 +91,15 @@ public class TicTacToe {
             }while(!result);
 
             round++;
-        }while(!board.testVictory() || round==9);
+        }while(!board.testVictory() && round<=8);
 
         print();
 
         if(board.testVictory()) {
-            System.out.println("\n\n"+player.getName()+" vous avez gagner !\n\n");
+            System.out.println("\n\n"+player.getName()+" you win !\n\n");
             player.addVictory();
         }else {
+            System.out.println("It's a tie.");
             nul++;
         }
     }

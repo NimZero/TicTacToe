@@ -31,9 +31,9 @@ public class Board {
             }
             System.out.print(" "+sym+" ");
             if(i==2 || i==5) {
-                System.out.print("\n━━━╋━━━╋━━━\n");
+                System.out.print("\n\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u253c\u2500\u2500\u2500\n");
             }else if(i!=8){
-                System.out.print("┃");
+                System.out.print('\u2502');
             }
         }
         System.out.println();
