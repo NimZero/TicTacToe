@@ -58,7 +58,6 @@ public class TicTacToe {
     }
 
     public void print() {
-        System.out.println("Round: "+round+"\n");
         System.out.println(players[0]);
         board.print();
         System.out.println(players[1]);
