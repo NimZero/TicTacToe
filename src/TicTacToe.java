@@ -23,11 +23,15 @@ public class TicTacToe {
         char symbol = input.next().charAt(0);
         players[0] = new Player(name, symbol);
 
-        System.out.print("Player 2 enter your name: ");
-        name = input.next();
+        do {
+            System.out.print("Player 2 enter your name: ");
+            name = input.next();
+            if(name == player[0].getName()) System.out.println("You can't use the same name as player 1.");
+        }while(name == player[0].getName())
         do{
             System.out.print("Enter your symbol: ");
             symbol = input.next().charAt(0);
+            if(name == player[0].getSymbol()) System.out.println("You can't use the same symbol as player 1.");
         }while (symbol == players[0].getSymbol());
         players[1] = new Player(name, symbol);
     }
