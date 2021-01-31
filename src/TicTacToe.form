@@ -212,7 +212,7 @@
         </constraints>
         <properties>
           <enabled value="false"/>
-          <text value="Label"/>
+          <text value=""/>
         </properties>
       </component>
     </children>

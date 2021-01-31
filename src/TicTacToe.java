@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class TicTacToe extends JDialog {
     private JPanel contentPane;
@@ -35,18 +33,13 @@ public class TicTacToe extends JDialog {
         nul = 0;
         lastFirst = 0;
 
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                close();
-            }
-        });
         setContentPane(contentPane);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         getRootPane().setDefaultButton(replayBtn);
         pack();
         setMinimumSize(getSize());
         setLocationRelativeTo(null);
+        setModal(true);
 
         initBtns();
         resetBtn();
@@ -56,6 +49,7 @@ public class TicTacToe extends JDialog {
 
         setVisible(true);
     }
+
     private void replay() {
         board.reset();
         game++;
@@ -135,7 +129,7 @@ public class TicTacToe extends JDialog {
     }
 
     private void initBtns() {
-        quitBtn.addActionListener(e -> close());
+        quitBtn.addActionListener(e -> dispose());
         replayBtn.addActionListener(e -> replay());
         button1.addActionListener(e -> play(e, 0));
         button1.setMinimumSize(button1.getSize());
@@ -171,10 +165,5 @@ public class TicTacToe extends JDialog {
         nullLabel.setText(nul.toString());
         xLabel.setText(players[0].getVictories().toString());
         oLabel.setText(players[1].getVictories().toString());
-    }
-
-    private void close() {
-        dispose();
-        System.exit(0);
     }
 }
