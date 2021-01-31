@@ -1,109 +1,180 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class TicTacToe {
+public class TicTacToe extends JDialog {
+    private JPanel contentPane;
+    private JButton replayBtn;
+    private JButton quitBtn;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JButton button4;
+    private JButton button5;
+    private JButton button6;
+    private JButton button7;
+    private JButton button8;
+    private JButton button9;
+    private JPanel gameBoard;
+    private JLabel gameLabel;
+    private JLabel nullLabel;
+    private JLabel xLabel;
+    private JLabel oLabel;
+    private JPanel infoBoard;
+    private JLabel endInfo;
     private Integer round, game, nul, lastFirst;
     private final Board board;
     private final Player[] players;
 
     public TicTacToe() {
         board = new Board();
-        players = new Player[2];
+        players = new Player[]{new Player("Player X", 'X'), new Player("Player O", 'O')};
         round = 0;
-        lastFirst = 1;
-        game = 0;
+        game = 1;
         nul = 0;
-    }
+        lastFirst = 0;
 
-    public void initPlayers() {
-        Scanner input = new Scanner(System.in);
-        System.out.print("Player 1 enter your name: ");
-        String name = input.next();
-        System.out.print("Enter your symbol: ");
-        char symbol = input.next().charAt(0);
-        players[0] = new Player(name, symbol);
-
-        do {
-            System.out.print("Player 2 enter your name: ");
-            name = input.next();
-            if(name == player[0].getName()) System.out.println("You can't use the same name as player 1.");
-        }while(name == player[0].getName())
-        do{
-            System.out.print("Enter your symbol: ");
-            symbol = input.next().charAt(0);
-            if(name == player[0].getSymbol()) System.out.println("You can't use the same symbol as player 1.");
-        }while (symbol == players[0].getSymbol());
-        players[1] = new Player(name, symbol);
-    }
-
-    public void initBasicPlayers() {
-        players[0] = new Player("Player1", 'X');
-        players[1] = new Player("Player2", 'O');
-    }
-
-    private int askIndex(String player) {
-        Scanner input = new Scanner(System.in);
-        boolean keep = false;
-        int index = 0;
-        do{
-            keep = false;
-            try {
-                System.out.print("\n"+player+" where do you wan't to play ? (0-8) ");
-                index = input.nextInt();
-                if(index<0 || index>8) throw new Exception();
-
-            }catch (Exception e) {
-                System.out.println("Error.");
-                keep = true;
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                close();
             }
-        }while(keep);
+        });
+        setContentPane(contentPane);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        getRootPane().setDefaultButton(replayBtn);
+        pack();
+        setMinimumSize(getSize());
+        setLocationRelativeTo(null);
 
-        return index;
+        initBtns();
+        resetBtn();
+        labels();
+        board.reset();
+        setTitle("Tic-Tac-Toe");
+
+        setVisible(true);
     }
+    private void replay() {
+        board.reset();
+        game++;
 
-    public void print() {
-        System.out.println(players[0]);
-        board.print();
-        System.out.println(players[1]);
-    }
+        gameBoard.setVisible(true);
+        infoBoard.setVisible(true);
+        endInfo.setVisible(false);
 
-    public void play() {
-        if(lastFirst==0) {
+        if(lastFirst == 0) {
             round = 1;
+            lastFirst = 1;
         }else {
             round = 0;
+            lastFirst = 0;
         }
-        lastFirst = round;
-        game++;
-        board.reset();
 
-        //board.setBoard(new Character[] {'X', 'X', null, 'O', null, 'O', null, null, 'X'});
+        resetBtn();
+        labels();
+    }
 
-        System.out.println("Game "+game+", null: "+nul);
-        Player player;
-        do{
-            print();
-            player = players[round%2];
-            boolean result;
-            do{
-                int playIndex = askIndex(player.getName());
-                result = board.play(playIndex, player.getSymbol());
-                if(!result) {
-                    System.out.println("You can't play here");
-                }
-            }while(!result);
+    private void play(ActionEvent e, int index) {
+        Player player = players[round%2];
+        board.play(index, player.getSymbol());
 
-            round++;
-        }while(!board.testVictory() && round<=8);
+        JButton src = (JButton) e.getSource();
+        src.setEnabled(false);
+        src.setText(player.getSymbol().toString());
+        this.round++;
+        if(board.testVictory() || round>(8+lastFirst)) end();
+    }
 
-        print();
+    private void end() {
+        this.round--;
+        gameBoard.setVisible(false);
+        infoBoard.setVisible(false);
+        endInfo.setVisible(true);
 
+        replayBtn.setEnabled(true);
         if(board.testVictory()) {
-            System.out.println("\n\n"+player.getName()+" you win !\n\n");
-            player.addVictory();
+            players[round%2].addVictory();
+            endInfo.setText(players[round%2].getName()+" you win !");
         }else {
-            System.out.println("It's a tie.");
+            endInfo.setText("It's a tie !");
             nul++;
         }
+    }
+
+    private void resetBtn() {
+        replayBtn.setEnabled(false);
+
+        button1.setText("");
+        button1.setEnabled(true);
+
+        button2.setText("");
+        button2.setEnabled(true);
+
+        button3.setText("");
+        button3.setEnabled(true);
+
+        button4.setText("");
+        button4.setEnabled(true);
+
+        button5.setText("");
+        button5.setEnabled(true);
+
+        button6.setText("");
+        button6.setEnabled(true);
+
+        button7.setText("");
+        button7.setEnabled(true);
+
+        button8.setText("");
+        button8.setEnabled(true);
+
+        button9.setText("");
+        button9.setEnabled(true);
+    }
+
+    private void initBtns() {
+        quitBtn.addActionListener(e -> close());
+        replayBtn.addActionListener(e -> replay());
+        button1.addActionListener(e -> play(e, 0));
+        button1.setMinimumSize(button1.getSize());
+
+        button2.addActionListener(e -> play(e, 1));
+        button2.setMinimumSize(button2.getSize());
+
+        button3.addActionListener(e -> play(e, 2));
+        button3.setMinimumSize(button3.getSize());
+
+        button4.addActionListener(e -> play(e, 3));
+        button4.setMinimumSize(button4.getSize());
+
+        button5.addActionListener(e -> play(e, 4));
+        button5.setMinimumSize(button5.getSize());
+
+        button6.addActionListener(e -> play(e, 5));
+        button6.setMinimumSize(button6.getSize());
+
+        button7.addActionListener(e -> play(e, 6));
+        button7.setMinimumSize(button7.getSize());
+
+        button8.addActionListener(e -> play(e, 7));
+        button8.setMinimumSize(button8.getSize());
+
+        button9.addActionListener(e -> play(e, 8));
+        button9.setMinimumSize(button9.getSize());
+
+    }
+
+    private void labels() {
+        gameLabel.setText(game.toString());
+        nullLabel.setText(nul.toString());
+        xLabel.setText(players[0].getVictories().toString());
+        oLabel.setText(players[1].getVictories().toString());
+    }
+
+    private void close() {
+        dispose();
+        System.exit(0);
     }
 }
