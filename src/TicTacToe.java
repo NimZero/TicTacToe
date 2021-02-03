@@ -21,6 +21,7 @@ public class TicTacToe extends JDialog {
     private JLabel oLabel;
     private JPanel infoBoard;
     private JLabel endInfo;
+    private JLabel endInfo2;
     private Integer round, game, nul, lastFirst;
     private final Board board;
     private final Player[] players;
@@ -91,8 +92,10 @@ public class TicTacToe extends JDialog {
         if(board.testVictory()) {
             players[round%2].addVictory();
             endInfo.setText(players[round%2].getName()+" you win !");
+            endInfo2.setText(players[(round+1)%2].getName()+" it's your turn.");
         }else {
             endInfo.setText("It's a tie !");
+            endInfo2.setText(players[(round+1)%2].getName()+" it's your turn.");
             nul++;
         }
     }
